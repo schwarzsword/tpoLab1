@@ -1,12 +1,19 @@
 package part3;
 
-import part3.model.*;
+import org.junit.Before;
 import org.junit.Test;
+import part3.model.*;
 
 import static junit.framework.TestCase.assertEquals;
 import static part3.model.Location.*;
 
 public class Tests {
+    private VeeetVujhagyg veeetVujhagyg;
+
+    @Before
+    public void setUp() {
+        veeetVujhagyg = new VeeetVujhagyg();
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void nullDeclarationTest() {
@@ -19,14 +26,16 @@ public class Tests {
     }
 
     @Test
-    public void judgeTest() {
-        Person madman = new Person();
-        Person common = new Person();
-        madman.setSanity(3);
-        Society.judge(madman);
-        Society.judge(common);
-        assertEquals(FREEDOM, common.getLocation());
-        assertEquals(CLOSED_ROOM, madman.getLocation());
+    public void judgeSaneTest() {
+        Society.judge(veeetVujhagyg);
+        assertEquals(FREEDOM, veeetVujhagyg.getLocation());
+    }
+
+    @Test
+    public void judgeInaneTest() {
+        veeetVujhagyg.setSanity(3);
+        Society.judge(veeetVujhagyg);
+        assertEquals(CLOSED_ROOM, veeetVujhagyg.getLocation());
     }
 
     @Test
@@ -37,110 +46,119 @@ public class Tests {
     }
 
     @Test
-    public void imprisonTest() {
-        Person speaker = new Person();
-        Society.imprison(speaker, CLOSED_ROOM);
-        assertEquals(CLOSED_ROOM, speaker.getLocation());
-        Society.imprison(speaker, UNTAXED_PLACE);
-        assertEquals(UNTAXED_PLACE, speaker.getLocation());
+    public void imprisonRoomTest() {
+        Society.imprison(veeetVujhagyg, CLOSED_ROOM);
+        assertEquals(CLOSED_ROOM, veeetVujhagyg.getLocation());
     }
 
     @Test
-    public void discoverPlanetSanityTest() {
-        Person madman = new Person();
-        Person common = new Person();
-        Declaration insaneDeclaration = madman.declare("Mars", DeclarationType.DISCOVER_PLANET);
-        Declaration saneDeclaration = common.declare("Nevaudenzaaar", DeclarationType.DISCOVER_PLANET);
+    public void imprisonUntaxedTest() {
+        Society.imprison(veeetVujhagyg, UNTAXED_PLACE);
+        assertEquals(UNTAXED_PLACE, veeetVujhagyg.getLocation());
+    }
+
+
+    @Test
+    public void discoverPlanetSanitySaneTest() {
+        Declaration insaneDeclaration = veeetVujhagyg.declare("Mars", DeclarationType.DISCOVER_PLANET);
         Society.listen(insaneDeclaration);
-        Society.listen(saneDeclaration);
-        assertEquals(7, madman.getSanity());
-        assertEquals(10, common.getSanity());
+        assertEquals(7, veeetVujhagyg.getSanity());
     }
 
     @Test
-    public void discoverPlanetLocationTest() {
-        Person madman = new Person();
-        madman.setSanity(6);
-        Person common = new Person();
-        Declaration insaneDeclaration = madman.declare("Mars", DeclarationType.DISCOVER_PLANET);
-        Declaration saneDeclaration = common.declare("Raxacoricafallopatoruis", DeclarationType.DISCOVER_PLANET);
-        Society.listen(insaneDeclaration);
+    public void discoverPlanetSanityInsaneTest() {
+        Declaration saneDeclaration = veeetVujhagyg.declare("Nebuchadnezzar", DeclarationType.DISCOVER_PLANET);
         Society.listen(saneDeclaration);
-        assertEquals(CLOSED_ROOM, madman.getLocation());
-        assertEquals(FREEDOM, common.getLocation());
+        assertEquals(10, veeetVujhagyg.getSanity());
     }
 
     @Test
-    public void visitPlanetSanityTest() {
-        Person madman = new Person();
-        Person common = new Person();
-        Declaration insaneDeclaration = madman.declare("Unknown Planet", DeclarationType.VISIT_PLANET);
-        Declaration saneDeclaration = common.declare("Mars", DeclarationType.VISIT_PLANET);
-        Society.listen(insaneDeclaration);
+    public void discoverPlanetLocationSaneTest() {
+        Declaration saneDeclaration = veeetVujhagyg.declare("Raxacoricofallapatorius", DeclarationType.DISCOVER_PLANET);
         Society.listen(saneDeclaration);
-        assertEquals(7, madman.getSanity());
-        assertEquals(10, common.getSanity());
+        assertEquals(FREEDOM, veeetVujhagyg.getLocation());
     }
 
     @Test
-    public void visitPlanetLocationTest() {
-        Person madman = new Person();
-        madman.setSanity(6);
-        Person common = new Person();
-        Declaration insaneDeclaration = madman.declare("Unknown Planet", DeclarationType.VISIT_PLANET);
-        Declaration saneDeclaration = common.declare("Mars", DeclarationType.VISIT_PLANET);
+    public void discoverPlanetLocationInsaneTest() {
+        veeetVujhagyg.setSanity(6);
+        Declaration insaneDeclaration = veeetVujhagyg.declare("Mars", DeclarationType.DISCOVER_PLANET);
         Society.listen(insaneDeclaration);
-        Society.listen(saneDeclaration);
-        assertEquals(CLOSED_ROOM, madman.getLocation());
-        assertEquals(FREEDOM, common.getLocation());
+        assertEquals(CLOSED_ROOM, veeetVujhagyg.getLocation());
     }
 
     @Test
-    public void workOnPlanetSanityTest() {
-        Person madman = new Person();
-        Person common = new Person();
-        Declaration insaneDeclaration = madman.declare("Green pen", DeclarationType.WORK_ON_PLANET);
-        Declaration saneDeclaration = common.declare("Human", DeclarationType.WORK_ON_PLANET);
-        Society.listen(insaneDeclaration);
+    public void visitPlanetSanitySaneTest() {
+        Declaration saneDeclaration = veeetVujhagyg.declare("Mars", DeclarationType.VISIT_PLANET);
         Society.listen(saneDeclaration);
-        assertEquals(4, madman.getSanity());
-        assertEquals(10, common.getSanity());
+        assertEquals(10, veeetVujhagyg.getSanity());
     }
 
     @Test
-    public void workOnPlanetLocationTest() {
-        Person madman = new Person();
-        Person common = new Person();
-        Declaration insaneDeclaration = madman.declare("Green pen", DeclarationType.WORK_ON_PLANET);
-        Declaration saneDeclaration = common.declare("Human", DeclarationType.WORK_ON_PLANET);
+    public void visitPlanetSanityInsaneTest() {
+        Declaration insaneDeclaration = veeetVujhagyg.declare("Unknown Planet", DeclarationType.VISIT_PLANET);
         Society.listen(insaneDeclaration);
+        assertEquals(7, veeetVujhagyg.getSanity());
+    }
+
+    @Test
+    public void visitPlanetLocationSaneTest() {
+        Declaration saneDeclaration = veeetVujhagyg.declare("Mars", DeclarationType.VISIT_PLANET);
         Society.listen(saneDeclaration);
-        assertEquals(CLOSED_ROOM, madman.getLocation());
-        assertEquals(FREEDOM, common.getLocation());
+        assertEquals(FREEDOM, veeetVujhagyg.getLocation());
+    }
+
+    @Test
+    public void visitPlanetLocationInsaneTest() {
+        veeetVujhagyg.setSanity(6);
+        Declaration insaneDeclaration = veeetVujhagyg.declare("Unknown Planet", DeclarationType.VISIT_PLANET);
+        Society.listen(insaneDeclaration);
+        assertEquals(CLOSED_ROOM, veeetVujhagyg.getLocation());
+    }
+
+    @Test
+    public void workOnPlanetSanitySaneTest() {
+        Declaration saneDeclaration = veeetVujhagyg.declare("Human", DeclarationType.WORK_ON_PLANET);
+        Society.listen(saneDeclaration);
+        assertEquals(10, veeetVujhagyg.getSanity());
+    }
+
+    @Test
+    public void workOnPlanetSanityInsaneTest() {
+        Declaration insaneDeclaration = veeetVujhagyg.declare("Green pen", DeclarationType.WORK_ON_PLANET);
+        Society.listen(insaneDeclaration);
+        assertEquals(4, veeetVujhagyg.getSanity());
+    }
+
+    @Test
+    public void workOnPlanetLocationSaneTest() {
+        Declaration saneDeclaration = veeetVujhagyg.declare("Human", DeclarationType.WORK_ON_PLANET);
+        Society.listen(saneDeclaration);
+        assertEquals(FREEDOM, veeetVujhagyg.getLocation());
+    }
+
+    @Test
+    public void workOnPlanetLocationInsaneTest() {
+        Declaration insaneDeclaration = veeetVujhagyg.declare("Green pen", DeclarationType.WORK_ON_PLANET);
+        Society.listen(insaneDeclaration);
+        assertEquals(CLOSED_ROOM, veeetVujhagyg.getLocation());
     }
 
     @Test
     public void writeBookOnFreedomTest() {
-        VeeetVujhagyg veeetVujhagyg = new VeeetVujhagyg();
         veeetVujhagyg.writeBook();
         assertEquals(FREEDOM, veeetVujhagyg.getLocation());
-
-        veeetVujhagyg.setLocation(UNTAXED_PLACE);
-        veeetVujhagyg.writeBook();
-        assertEquals(UNTAXED_PLACE, veeetVujhagyg.getLocation());
     }
 
     @Test
-    public void writeBookInRoomTest(){
-        VeeetVujhagyg veeetVujhagyg = new VeeetVujhagyg();
+    public void writeBookInRoomTest() {
         veeetVujhagyg.setLocation(CLOSED_ROOM);
         veeetVujhagyg.writeBook();
         assertEquals(UNTAXED_PLACE, veeetVujhagyg.getLocation());
     }
 
     @Test
-    public void writeBookInUntaxedPlace(){
-        VeeetVujhagyg veeetVujhagyg = new VeeetVujhagyg();
+    public void writeBookInUntaxedPlace() {
         veeetVujhagyg.setLocation(UNTAXED_PLACE);
         veeetVujhagyg.writeBook();
         assertEquals(UNTAXED_PLACE, veeetVujhagyg.getLocation());
