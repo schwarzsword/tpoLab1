@@ -12,17 +12,27 @@ public class SplayTree {
 
     public void insert(int value) {
         TreeElement element = root;
+        TreeElement parent = null;
         do {
             if (element == null) {
                 element = new TreeElement(value);
+                element.setParent(parent);
+                if (parent != null) {
+                    if (value < parent.getValue()) {
+                        parent.setLeftChild(element);
+                    } else {
+                        parent.setRightChild(element);
+                    }
+                }
+            } else {
+                parent = element;
+                if (value < element.getValue()) {
+                    element = element.getLeftChild();
+                } else {
+                    element = element.getRightChild();
+                }
             }
-            if (element.getValue() < value) {
-                element = element.getLeftChild();
-            }
-            if (element.getValue() > value) {
-                element = element.getRightChild();
-            }
-        } while (element.getValue() == value);
+        } while (element == null || element.getValue() != value);
         splay(element);
     }
 
@@ -58,7 +68,7 @@ public class SplayTree {
                     rotateRight(element.getParent().getParent());
                     rotateRight(element.getParent());
                 } else {
-                    rotateLeft(element.getParent());
+                    rotateRight(element.getParent());
                     rotateLeft(element.getParent());
                 }
             } else if (element.getParent().getParent() == null) {
@@ -68,7 +78,7 @@ public class SplayTree {
                 rotateLeft(element.getParent());
             } else {
                 rotateLeft(element.getParent());
-                rotateLeft(element.getParent());
+                rotateRight(element.getParent());
             }
         root = element;
     }
@@ -76,11 +86,13 @@ public class SplayTree {
     private void rotateLeft(TreeElement element) {
         TreeElement parent = element.getParent();
         TreeElement rightChild = element.getRightChild();
-        if (parent != null)
-            if (parent.getLeftChild() == element)
+        if (parent != null) {
+            if (parent.getLeftChild() == element) {
                 parent.setLeftChild(rightChild);
-            else
+            } else {
                 parent.setRightChild(rightChild);
+            }
+        }
         TreeElement tmp = rightChild.getLeftChild();
         rightChild.setLeftChild(element);
         element.setRightChild(tmp);
@@ -111,11 +123,18 @@ public class SplayTree {
 
     private void merge(TreeElement leftTree, TreeElement rightTree) {
         TreeElement newRoot = findMax(leftTree);
+        if (newRoot == null) {
+            root = rightTree;
+            return;
+        }
         splay(newRoot);
         newRoot.setRightChild(rightTree);
     }
 
     private TreeElement findMax(TreeElement element) {
+        if (element == null) {
+            return null;
+        }
         while (element.getRightChild() != null) {
             element = element.getRightChild();
         }
