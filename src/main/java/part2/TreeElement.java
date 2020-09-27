@@ -6,7 +6,6 @@ import lombok.ToString;
 
 @Data
 @ToString(exclude = "parent")
-@EqualsAndHashCode(of = "value")
 public class TreeElement {
     private int value;
     private TreeElement parent;

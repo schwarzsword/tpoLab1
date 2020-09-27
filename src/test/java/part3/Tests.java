@@ -3,6 +3,8 @@ package part3;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import part3.model.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,18 +48,12 @@ public class Tests {
         assertEquals(7, speaker.getSanity());
     }
 
-    @Test
-    public void imprisonRoomTest() {
-        Society.imprison(veeetVujhagyg, CLOSED_ROOM);
-        assertEquals(CLOSED_ROOM, veeetVujhagyg.getLocation());
+    @ParameterizedTest
+    @EnumSource(Location.class)
+    public void imprisonTest( Location location) {
+        Society.imprison(veeetVujhagyg, location);
+        assertEquals(location, veeetVujhagyg.getLocation());
     }
-
-    @Test
-    public void imprisonUntaxedTest() {
-        Society.imprison(veeetVujhagyg, UNTAXED_PLACE);
-        assertEquals(UNTAXED_PLACE, veeetVujhagyg.getLocation());
-    }
-
 
     @Test
     public void discoverPlanetSanitySaneTest() {
