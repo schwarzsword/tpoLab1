@@ -18,16 +18,12 @@ public class Tests {
 
     @Test
     public void nullDeclarationTest() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Society.listen(null);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Society.listen(null));
     }
 
     @Test
     public void anonymousDeclarationTest() {
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            Society.listen(new Declaration(null, "Mars", DeclarationType.DISCOVER_PLANET));
-        });
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> Society.listen(new Declaration(null, "Mars", DeclarationType.DISCOVER_PLANET)));
     }
 
     @Test

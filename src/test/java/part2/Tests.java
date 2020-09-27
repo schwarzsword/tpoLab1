@@ -17,16 +17,12 @@ public class Tests {
 
     @Test
     public void emptyFindTest() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> {
-            newTree.find(1);
-        });
+        Assertions.assertThrows(NoSuchElementException.class, () -> newTree.find(1));
     }
 
     @Test
     public void emptyDeleteTest() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> {
-            newTree.delete(1);
-        });
+        Assertions.assertThrows(NoSuchElementException.class, () -> newTree.delete(1));
     }
 
 
