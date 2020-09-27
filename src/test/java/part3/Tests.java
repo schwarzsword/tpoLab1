@@ -1,28 +1,33 @@
 package part3;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import part3.model.*;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static part3.model.Location.*;
 
 public class Tests {
     private VeeetVujhagyg veeetVujhagyg;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         veeetVujhagyg = new VeeetVujhagyg();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void nullDeclarationTest() {
-        Society.listen(null);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Society.listen(null);
+        });
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void anonymousDeclarationTest() {
-        Society.listen(new Declaration(null, "Mars", DeclarationType.DISCOVER_PLANET));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            Society.listen(new Declaration(null, "Mars", DeclarationType.DISCOVER_PLANET));
+        });
     }
 
     @Test

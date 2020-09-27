@@ -37,13 +37,14 @@ public class SplayTree {
             if (element == null) {
                 throw new NoSuchElementException();
             }
-            if (element.getValue() < value) {
+            if (value < element.getValue()) {
                 element = element.getLeftChild();
+            } else {
+                if (value > element.getValue()) {
+                    element = element.getRightChild();
+                }
             }
-            if (element.getValue() > value) {
-                element = element.getRightChild();
-            }
-        } while (element.getValue() == value);
+        } while (element == null || element.getValue() != value);
         splay(element);
         return element;
     }
