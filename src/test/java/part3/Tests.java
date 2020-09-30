@@ -35,7 +35,7 @@ class Tests {
     }
 
     @Test
-    void judgeInaneTest() {
+    void judgeInsaneTest() {
         veeetVujhagyg.setSanity(3);
         Society.judge(veeetVujhagyg);
         assertEquals(CLOSED_ROOM, veeetVujhagyg.getLocation());
